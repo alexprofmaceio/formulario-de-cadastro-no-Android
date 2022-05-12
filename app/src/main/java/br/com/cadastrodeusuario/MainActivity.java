@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         EditText senha = findViewById(R.id.editSenha2);
         EditText endereco = findViewById(R.id.editEndereco);
 
-        Button confirmar = findViewById(R.id.btnLogin);
+        Button confirmar = findViewById(R.id.btnCadastrar);
         Button cancelar = findViewById(R.id.btnCancelar);
 
         DatabaseActivity db = new DatabaseActivity(this);
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
                 if(txtNome.equals("") || txtEmail.equals("") || txtSenha.equals("") || txtEndereco.equals("")){
                     Toast.makeText(MainActivity.this, "Todos os campos precisam estar preenchidos", Toast.LENGTH_SHORT).show();
                 } else {
-                    Boolean existe = db.validaUsuario(txtEmail);
+                    Boolean existe = db.validarUsuario(txtEmail);
                     if(existe == false){
                         try{
                             md5 = new BigInteger(1, EncriptaMD5.encriptaSenha(senhaNormal));
@@ -53,9 +53,9 @@ public class MainActivity extends AppCompatActivity {
                         String senhaEncript = md5.toString(16);
 
                         Boolean insere = db.inserirDados(txtNome, txtEmail, senhaEncript, txtEndereco);
-                        if(insere = true){
+                        if(insere == true){
                             Toast.makeText(MainActivity.this, "Cadastrado com sucesso!", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(getApplicationContext(), MenuPrincipal.class);
+                            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                             startActivity(intent);
                         } else {
                             Toast.makeText(MainActivity.this, "Erro ao cadastrar.", Toast.LENGTH_SHORT).show();
@@ -70,8 +70,8 @@ public class MainActivity extends AppCompatActivity {
         cancelar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
-                System.exit(0);
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(intent);
             }
         });
     }
